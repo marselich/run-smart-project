@@ -1,4 +1,6 @@
 
+//slider
+
 const prev = document.querySelector('.carousel__prev'),
 	next = document.querySelector('.carousel__next');
 
@@ -21,7 +23,8 @@ next.addEventListener('click', () => {
 	slider.goTo('next');
 });
 
-//табы
+//tabs
+
 const tabs = document.querySelectorAll('.catalog__tab');
 const contents = document.querySelectorAll('.catalog__content');
 
@@ -36,6 +39,7 @@ tabs.forEach((elem, index) =>
 	})
 );
 
+//more btn
 
 const showMoreLink = document.querySelectorAll('.catalog-item__link');
 const backLink = document.querySelectorAll('.catalog-item__back');
@@ -56,27 +60,66 @@ backLink.forEach((elem) => {
 	})
 });
 
-// class TabList {
-// 	constructor(tabs, contents) {
-// 		this.tabs = tabs;
-// 		this.contents = contents;
 
-// 		this.tabs.addEventListener('click', event => {
-// 			const index = event.target.closest('.catalog__tab').dataset.value;
+//popup on jquery
 
-// 			this.openTab(index);
-// 		});
-// 	}
+$(document).ready(function () {
+	$('[data-modal=consultation]').on('click', function () {
+		$('.overlay, #consultation').fadeIn();
+	});
 
-// 	openTab(index) {
-// 		this.contents.querySelector('.catalog__tab_active').classList.remove('catalog__tab_active');
-// 		this.contents.querySelector(`.tab--${index}`).classList.add('active');
-// 	}
+	$('[data-modal=order]').on('click', function () {
+		$('.overlay, #order').fadeIn();
+	});
+
+	$('.modal__close').on('click', () => {
+		$('.overlay, #consultation, #order, #thanks').fadeOut();
+	});
+
+	$('.button_mini').each(function (i) {
+		$(this).on('click', function () {
+			$('#order .modal__descr').text($('.catalog-item__subtitle').eq(i).text());
+		});
+	});
+});
+
+
+
+//popup on js: don't work animation
+
+// const btns = document.querySelectorAll('.button'),
+// 	overlay = document.querySelector('.overlay');
+
+// const modals = document.querySelectorAll('.modal');
+// const modalCloseBtn = document.querySelectorAll('.modal__close');
+
+// const ShowModalWindow = (data) => {
+// 	overlay.classList.add('overlay_active');
+// 	document.getElementById(data).classList.add('modal_active');
 // }
 
-// document.addEventListener('DOMContentLoaded', () => {
-// 	const tabs = document.querySelector('.catalog__tabs');
-// 	const contents = document.querySelector('.catalog__content');
+// btns.forEach((btn) => {
+// 	btn.addEventListener('click', (e) => {
+// 		e.preventDefault();
+// 		if (btn.dataset.modal === 'consultation') {
+// 			ShowModalWindow('consultation');
+// 		}
+// 		else if (btn.dataset.modal === 'order') {
+// 			ShowModalWindow('order');
+// 		}
+// 		else if (btn.dataset.modal === 'thanks') {
+// 			ShowModalWindow('thanks');
+// 		}
+// 	});
+// });
 
-// 	const tabList = new TabList(tabs, contents);
-// })
+// const CloseModalWindow = (e) => {
+// 	overlay.classList.remove('overlay_active');
+// 	modals.forEach(modal => {
+// 		modal.classList.remove('modal_active');
+// 	});
+// }
+
+// modalCloseBtn.forEach((btn) => {
+// 	btn.addEventListener('click', CloseModalWindow);
+// });
