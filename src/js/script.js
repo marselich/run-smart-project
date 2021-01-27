@@ -81,6 +81,97 @@ $(document).ready(function () {
 			$('#order .modal__descr').text($('.catalog-item__subtitle').eq(i).text());
 		});
 	});
+
+	//validation forms
+
+	$('form').submit(function (e) {
+		e.preventDefault();
+	});
+
+	const ValidateForm = (form) => {
+		$(form).validate({
+			rules: {
+				name: {
+					required: true,
+					maxlength: 30
+				},
+				phone: "required",
+				email: {
+					required: true,
+					email: true,
+				},
+			},
+			messages: {
+				name: {
+					required: "Пожалуйста, введите свое имя",
+					maxlength: "Максимальная длинна символов {0}"
+				},
+				phone: "Пожалуйста, введите свой номер телефона",
+				email: {
+					required: "Пожалуйста, введите свою почту",
+					email: "Неправильно введен email"
+				}
+			},
+			submitHandler: function () {
+				$.ajax({
+					type: "POST",
+					url: "mailer/smart.php",
+					data: $(form).serialize()
+				}).done(function () {
+					$(this).find('input').val('');
+					$('#consultation, #order').fadeOut('fast');
+					$('.overlay, #thanks').fadeIn('slow');
+
+					$('form').trigger('reset');
+				});
+				return false;
+			}
+		}
+		);
+	}
+
+	ValidateForm('#consultation-form');
+	ValidateForm('#consultation form');
+	ValidateForm('#order form');
+
+	//mask for phone
+	$("form [name=phone]").mask("+7 (999) 999-99-99");
+
+
+	//scroll up and smooth 
+
+	$(window).scroll(function () {
+		if ($(this).scrollTop() > 1600) {
+			$('.scroll-up').fadeIn();
+		} else {
+			$('.scroll-up').fadeOut();
+		}
+	});
+
+	$("a[href='#up']").click(function () {
+		var _href = $(this).attr("href");
+		$("html, body").animate({ scrollTop: $(_href).offset().top + "px" });
+		return false;
+	});
+
+
+	var wowFadeInUp = new WOW(
+		{
+			boxClass: 'wow_fadeInUp',      // animated element css class (default is wow)
+			scrollContainer: null,    // optional scroll container selector, otherwise use window,
+		}
+	);
+	wowFadeInUp.init();
+
+
+	var wowFadeIn = new WOW(
+		{
+			boxClass: 'wow_fadeIn',      // animated element css class (default is wow)
+			scrollContainer: document.querySelectorAll('.catalog-item'),    // optional scroll container selector, otherwise use window,
+		}
+	);
+	wowFadeIn.init();
+
 });
 
 
